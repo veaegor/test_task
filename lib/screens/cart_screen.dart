@@ -2,37 +2,36 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/user_bloc.dart';
+import '../cart_bloc/cart_bloc.dart';
+import '../category_bloc/user_bloc.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => UserBloc()..add(LoadUserEvent()),
-        child: BlocBuilder<UserBloc, UserState>(
+    return BlocProvider.value(
+        value: BlocProvider.of<CartBloc>(context),
+        child: BlocBuilder<CartBloc, CartState>(
           builder: (context, state) {
-            if (state is UserLoadingState) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+            if (state.status.isLoading) {
+              return const CircularProgressIndicator();
             }
-            if (state is UserErrorState) {
+            if (state.status.isError) {
               return const Center(
                 child: Text('error'),
               );
             }
-            if (state is UserLoadedState) {
+            if (state.status.isSuccess) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   children: [
-                    Row(
+                    const Row(
                       children: [
-                        const Icon(Icons.location_city_outlined),
+                        Icon(Icons.location_city_outlined),
                         Column(
-                          children: [Text('134342'), const Text('asdasda')],
+                          children: [Text('134342'), Text('asdasda')],
                         ),
                       ],
                     ),
@@ -40,21 +39,21 @@ class CartScreen extends StatelessWidget {
                       child: ListView.builder(
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
-                          itemCount: state.dish.length,
+                          itemCount: state.cart.length,
                           itemBuilder: (_, index) {
-                            return CartCard(index);
+                            return CartCard(context, index);
                           }),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Container(
                       width: double.infinity,
                       height: 50,
                       color: Colors.blue,
-                      child: Center(
+                      child: const Center(
                         child: Text('23021301203'),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 16,
                     ),
                   ],
@@ -67,21 +66,19 @@ class CartScreen extends StatelessWidget {
         ));
   }
 
-  BlocProvider<UserBloc> CartCard(int index) {
-    return BlocProvider(
-        create: (context) => UserBloc()..add(LoadUserEvent()),
-        child: BlocBuilder<UserBloc, UserState>(builder: (context, state) {
-          if (state is UserLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+  Widget CartCard(BuildContext context, int index) {
+    return BlocProvider.value(
+        value: BlocProvider.of<CartBloc>(context),
+        child: BlocBuilder<CartBloc, CartState>(builder: (context, state) {
+          if (state.status.isLoading) {
+            return const CircularProgressIndicator();
           }
-          if (state is UserErrorState) {
+          if (state.status.isError) {
             return const Center(
               child: Text('error'),
             );
           }
-          if (state is UserLoadedState) {
+          if (state.status.isSuccess) {
             return Padding(
               padding: const EdgeInsets.only(top: 8),
               child: Container(
@@ -93,30 +90,30 @@ class CartScreen extends StatelessWidget {
                       color: Colors.grey,
                       child: Image(
                         fit: BoxFit.contain,
-                        image: NetworkImage(state.dish[index].imageUrl ?? '0'),
+                        image: NetworkImage(state.cart[index].imageUrl ?? '0'),
                       ),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('${state.dish[index].name}'),
+                        Text('${state.cart[index].name}'),
                         Row(
                           children: [
-                            Text("${state.dish[index].price}"),
-                            SizedBox(
+                            Text("${state.cart[index].price}"),
+                            const SizedBox(
                               width: 5,
                             ),
-                            Text('${state.dish[index].weight}'),
+                            Text('${state.cart[index].weight}'),
                           ],
                         ),
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Container(
                       color: Colors.grey,
                       width: 100,
                       height: 32,
-                      child: Row(
+                      child: const Row(
                         children: [],
                       ),
                     ),

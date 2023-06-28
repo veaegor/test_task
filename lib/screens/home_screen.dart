@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_task/bloc/user_bloc.dart';
+import 'package:test_task/category_bloc/user_bloc.dart';
 
 import 'package:test_task/screens/category_screen.dart';
 import '../models/Cart_model.dart';
@@ -32,7 +32,7 @@ class _MainPageState extends State<HomeScreen> {
           bottomNavigationBar: NavigationBarTheme(
             data: const NavigationBarThemeData(backgroundColor: Colors.white),
             child: NavigationBar(
-                selectedIndex: screen_index,
+              selectedIndex: screen_index,
               onDestinationSelected: (index) =>
                   setState(() => this.screen_index = index),
               destinations: const [
@@ -55,17 +55,15 @@ Widget mainScreen() {
       create: (context) => UserBloc()..add(LoadUserEvent()),
       child: BlocBuilder<UserBloc, UserState>(
         builder: (context, state) {
-          if (state is UserLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+          if (state.status.isLoading) {
+            return CircularProgressIndicator();
           }
-          if (state is UserErrorState) {
+          if (state.status.isError) {
             return const Center(
               child: Text('error'),
             );
           }
-          if (state is UserLoadedState) {
+          if (state.status.isSuccess) {
             return Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 16,
@@ -96,13 +94,16 @@ Widget mainScreen() {
                                         state.category[index].imageUrl ?? '0'),
                                     fit: BoxFit.cover)),
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 16, top: 12,right: 150),
-                              child: Text(state.category[index].name ?? '0',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: 'SF-Pro',
-                              ),),
+                              padding: const EdgeInsets.only(
+                                  left: 16, top: 12, right: 150),
+                              child: Text(
+                                state.category[index].name ?? '0',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: 'SF-Pro',
+                                ),
+                              ),
                             ),
                           ),
                         );

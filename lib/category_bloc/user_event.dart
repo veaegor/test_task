@@ -3,24 +3,25 @@ part of 'user_bloc.dart';
 @immutable
 abstract class UserEvent extends Equatable {
   const UserEvent();
+  @override
+  List<Object> get props => [];
 }
 
 class LoadUserEvent extends UserEvent {
   @override
-  List<Object?> get props => [];
+  List<Object> get props => [];
 }
 
 class CartDishAdded extends UserEvent {
-  List<DishesModel> dish;
-  CartDishAdded(this.dish);
+  final DishesModel dish;
+  const CartDishAdded(this.dish);
   @override
   List<Object> get props => [];
 }
 
 class CartDishRemoved extends UserEvent {
-  List<DishesModel> dish;
-  int index;
-  CartDishRemoved(this.dish,this.index);
+  final DishesModel dish;
+  const CartDishRemoved(this.dish);
   @override
   List<Object> get props => [];
 }
