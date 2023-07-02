@@ -56,7 +56,7 @@ Widget mainScreen() {
       child: BlocBuilder<UserBloc, UserState>(
         builder: (context, state) {
           if (state.status.isLoading) {
-            return CircularProgressIndicator();
+            return const Center(child: CircularProgressIndicator());
           }
           if (state.status.isError) {
             return const Center(

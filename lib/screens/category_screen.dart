@@ -21,7 +21,7 @@ class CategoryScreen extends StatelessWidget {
       child: BlocBuilder<DishBloc, DishState>(
         builder: (context, state) {
           if (state.status.isLoading) {
-            return const CircularProgressIndicator();
+            return const Center(child: CircularProgressIndicator());
           }
           if (state.status.isError) {
             return const Center(
@@ -89,21 +89,32 @@ class CategoryScreen extends StatelessWidget {
                                                 horizontal: 16),
                                             child: Container(
                                               width: double.infinity,
-                                              color: Colors.white,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
                                               child: Padding(
                                                 padding:
                                                     const EdgeInsets.symmetric(
                                                         horizontal: 16),
                                                 child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   mainAxisSize:
                                                       MainAxisSize.min,
                                                   children: [
                                                     const SizedBox(height: 16),
                                                     Container(
-                                                      color: const Color(
-                                                          0xffF8F7F5),
                                                       height: 310,
                                                       width: double.infinity,
+                                                      decoration: BoxDecoration(
+                                                        color: const Color(
+                                                            0xffF8F7F5),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
                                                       child: Image(
                                                         fit: BoxFit.contain,
                                                         image: NetworkImage(
@@ -113,16 +124,32 @@ class CategoryScreen extends StatelessWidget {
                                                       ),
                                                     ),
                                                     const SizedBox(height: 8),
-                                                    Text(state
-                                                            .dish[index].name ??
-                                                        '0'),
+                                                    Text(
+                                                      state.dish[index].name ??
+                                                          '0',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
                                                     const SizedBox(height: 8),
                                                     Row(
                                                       children: [
                                                         Text(
-                                                            '${state.dish[index].price}'),
+                                                          '${state.dish[index].price}\u20bd',
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 5,
+                                                        ),
                                                         Text(
-                                                            '${state.dish[index].weight}')
+                                                          '${state.dish[index].weight}г',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.grey),
+                                                        )
                                                       ],
                                                     ),
                                                     const SizedBox(height: 8),
@@ -141,11 +168,22 @@ class CategoryScreen extends StatelessWidget {
                                                       child: Container(
                                                         height: 50,
                                                         width: double.infinity,
-                                                        color: Colors.blue,
                                                         alignment:
                                                             Alignment.center,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color:
+                                                              Color(0xff3364E0),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
                                                         child: const Text(
-                                                            'Добавить в корзину'),
+                                                          'Добавить в корзину',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
                                                       ),
                                                     ),
                                                     const SizedBox(height: 16),
@@ -190,4 +228,76 @@ class CategoryScreen extends StatelessWidget {
       ),
     );
   }
+
+  /* Widget PopUpCard(BuildContext context, int index) {
+    BlocBuilder<DishBloc, DishState>(builder: (context, state) {
+      if (state.status.isLoading) {
+        return const CircularProgressIndicator();
+      }
+      if (state.status.isError) {
+        return const Center(
+          child: Text('error'),
+        );
+      }
+      if (state.status.isSuccess) {
+        return Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Container(
+              width: double.infinity,
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 16),
+                    Container(
+                      color: const Color(0xffF8F7F5),
+                      height: 310,
+                      width: double.infinity,
+                      child: Image(
+                        fit: BoxFit.contain,
+                        image: NetworkImage(state.dish[index].imageUrl ?? '0'),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(state.dish[index].name ?? '0'),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Text('${state.dish[index].price}'),
+                        Text('${state.dish[index].weight}')
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(state.dish[index].description ?? '0'),
+                    const SizedBox(height: 16),
+                    GestureDetector(
+                      onTap: () {
+                        context
+                            .read<CartBloc>()
+                            .add(CartDishAdded(state.dish[index]));
+                      },
+                      child: Container(
+                        height: 50,
+                        width: double.infinity,
+                        color: Colors.blue,
+                        alignment: Alignment.center,
+                        child: const Text('Добавить в корзину'),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      } else {
+        return Container();
+      }
+    });
+    return Container();
+  }*/
 }

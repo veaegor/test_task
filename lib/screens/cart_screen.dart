@@ -48,9 +48,13 @@ class CartScreen extends StatelessWidget {
                     Container(
                       width: double.infinity,
                       height: 50,
-                      color: Colors.blue,
+                      decoration: BoxDecoration(
+                        color: Color(0xff3364E0),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       child: const Center(
-                        child: Text('23021301203'),
+                        child: Text('Оплатить 12321\u20bd',
+                        style: TextStyle(color: Colors.white),),
                       ),
                     ),
                     const SizedBox(
@@ -80,14 +84,14 @@ class CartScreen extends StatelessWidget {
           }
           if (state.status.isSuccess) {
             return Padding(
-              padding: const EdgeInsets.only(top: 8),
+              padding: const EdgeInsets.only(top: 16),
               child: Container(
                 child: Row(
                   children: [
                     Container(
                       height: 62,
                       width: 62,
-                      color: Colors.grey,
+                      color: Color(0xffF8F7F5),
                       child: Image(
                         fit: BoxFit.contain,
                         image: NetworkImage(state.cart[index].imageUrl ?? '0'),
@@ -99,22 +103,36 @@ class CartScreen extends StatelessWidget {
                         Text('${state.cart[index].name}'),
                         Row(
                           children: [
-                            Text("${state.cart[index].price}"),
+                            Text('${state.cart[index].price}\u20bd'),
                             const SizedBox(
                               width: 5,
                             ),
-                            Text('${state.cart[index].weight}'),
+                            Text(
+                              '${state.cart[index].weight}г',
+                              style: TextStyle(color: Colors.grey),
+                            ),
                           ],
                         ),
                       ],
                     ),
                     const Spacer(),
                     Container(
-                      color: Colors.grey,
                       width: 100,
                       height: 32,
-                      child: const Row(
-                        children: [],
+                      decoration: BoxDecoration(
+                        color: Color(0xffEFEEEC),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 6),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(Icons.remove),
+                            Text('1'),
+                            Icon(Icons.add)
+                          ],
+                        ),
                       ),
                     ),
                   ],
