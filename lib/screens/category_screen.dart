@@ -5,7 +5,8 @@ import '../dish_bloc/dish_bloc.dart';
 import '../cart_bloc/cart_bloc.dart';
 
 class CategoryScreen extends StatelessWidget {
-  const CategoryScreen({super.key});
+   CategoryScreen({super.key, required this.categoryName});
+  final String? categoryName;
 
   @override
   Widget build(BuildContext context) {
@@ -35,33 +36,12 @@ class CategoryScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  Row(
+                   Row(
+                    mainAxisSize: MainAxisSize.max,
                     children: [
-                      const Icon(Icons.location_city_outlined),
-                      Column(
-                        children: [
-                          Text('${state.dish.length}'),
-                          const Text('asdasda')
-                        ],
-                      ),
+                      Icon(Icons.arrow_back_ios),
+                      Text(categoryName??'0'),
                     ],
-                  ),
-                  Container(
-                    height: 35,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 4,
-                        itemBuilder: (_, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(left: 8),
-                            child: Container(
-                              width: 95,
-                              height: 35,
-                              color: Colors.red,
-                              child: const Text(''),
-                            ),
-                          );
-                        }),
                   ),
                   const SizedBox(height: 16),
                   Expanded(
@@ -157,19 +137,8 @@ class CategoryScreen extends StatelessWidget {
                                                             .description ??
                                                         '0'),
                                                     const SizedBox(height: 16),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        context
-                                                            .read<CartBloc>()
-                                                            .add(CartDishAdded(
-                                                                state.dish[
-                                                                    index]));
-                                                      },
-                                                      child: Container(
-                                                        height: 50,
-                                                        width: double.infinity,
-                                                        alignment:
-                                                            Alignment.center,
+                                                    Material(
+                                                      child: Ink(
                                                         decoration:
                                                             BoxDecoration(
                                                           color:
@@ -178,11 +147,28 @@ class CategoryScreen extends StatelessWidget {
                                                               BorderRadius
                                                                   .circular(10),
                                                         ),
-                                                        child: const Text(
-                                                          'Добавить в корзину',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white),
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            context
+                                                                .read<
+                                                                    CartBloc>()
+                                                                .add(CartDishAdded(
+                                                                    state.dish[
+                                                                        index]));
+                                                          },
+                                                          child: Container(
+                                                            height: 50,
+                                                            width:
+                                                                double.infinity,
+                                                            alignment: Alignment
+                                                                .center,
+                                                            child: const Text(
+                                                              'Добавить в корзину',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
@@ -198,7 +184,10 @@ class CategoryScreen extends StatelessWidget {
                                 child: Container(
                                     height: 110,
                                     width: 110,
-                                    color: const Color(0xffF8F7F5),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xffF8F7F5),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
                                     alignment: Alignment.center,
                                     child: Image(
                                       fit: BoxFit.contain,
